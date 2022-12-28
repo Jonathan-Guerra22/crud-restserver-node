@@ -8,6 +8,7 @@ const router = Router()
 
 
 router.get('/', usuariosGet);
+
 router.post('/', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio y con mas de 6 caracteres').isLength({min:6}),
@@ -24,7 +25,13 @@ router.put('/:id', [
     check('rol').custom(esRolValido),
     validarCampos
 ], usuariosPut);
-router.delete('/', usuariosDelete)
+
+router.delete('/:id', [
+    check('id', 'No es un id valido').isMongoId(),
+    check('id').custom(existeUsuarioPorId),
+    validarCampos
+], usuariosDelete)
+
 router.patch('/', usuariosPatch)
 
 
