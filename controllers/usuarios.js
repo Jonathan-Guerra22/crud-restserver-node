@@ -1,9 +1,11 @@
 const { Response, Request } = require('express')
+const bcryptjs = require('bcryptjs')
 
+const Usuario = require('../models/usuario');
 
 const usuariosGet = (req = Request, res = Response) => {
 
-    const {q, nombre, apikey, page = 1, limit} = req.query;
+    const { q, nombre, apikey, page = 1, limit } = req.query;
 
     res.json({
         message: 'get desde el api',
@@ -15,14 +17,42 @@ const usuariosGet = (req = Request, res = Response) => {
     })
 };
 
-const usuariosPost = (req, res = Response) => {
+const usuariosPost = async (req, res = Response) => {
 
-    const {edad, nombre} = req.body;
+    const {
+        nombre,
+        correo,
+        password,
+        rol
+    } = req.body;
+
+
+    const usuario = new Usuario({
+        nombre,
+        correo,
+        password,
+        rol
+    });
+
+
+
+    const existeEmail = await Usuario.findOne({ correo });
+    if (existeEmail) {
+        return res.status(400).json({
+            msg: 'El correo ya esta registrado'
+        })
+    }
+
+
+    const salt = bcryptjs.genSaltSync()
+    usuario.password = bcryptjs.hashSync(password, salt)
+
+
+    await usuario.save(usuario)
 
     res.json({
         message: 'post desde el api',
-        edad,
-        nombre
+        usuario
     })
 }
 
@@ -37,7 +67,7 @@ const usuariosPut = (req, res = Response) => {
     })
 }
 
-const usuariosDelete =  (req, res = Response) => {
+const usuariosDelete = (req, res = Response) => {
     res.json({
         message: 'delete desde el api'
     })

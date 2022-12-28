@@ -1,4 +1,4 @@
-const { Schema, model } = requiere('mongoose')
+const { Schema, model } = require('mongoose')
 
 const UsuarioSchema = Schema({
 
@@ -18,7 +18,7 @@ const UsuarioSchema = Schema({
     img: {
         type: String,
     },
-    role: {
+    rol: {
         type: String,
         requiered: [true, 'El rol es obligatorio'],
         enum: ['ADMIN', 'USER_ROLE']
