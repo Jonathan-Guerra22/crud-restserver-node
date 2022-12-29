@@ -9,31 +9,31 @@ const { googleVerify } = require('../helpers/googleVerify');
 
 
 
-const login = async(req = request, res = response) => {
+const login = async (req = request, res = response) => {
 
-    const { correo , password } = req.body;
+    const { correo, password } = req.body;
 
-    try{
+    try {
 
-        const usuario = await Usuario.findOne({correo})
+        const usuario = await Usuario.findOne({ correo })
 
-        if (!usuario){
+        if (!usuario) {
             return res.status(400).json({
-                msg:'Usuario / contraseña no son validos'
+                msg: 'Usuario / contraseña no son validos'
             })
         }
 
-        if(!usuario.status){
+        if (!usuario.status) {
             return res.status(400).json({
-                msg:'Usuario / contraseña no son validos'
+                msg: 'Usuario / contraseña no son validos'
             })
         }
 
         const validPassword = bcryptjs.compareSync(password, usuario.password);
 
-        if(!validPassword){
+        if (!validPassword) {
             return res.status(400).json({
-                msg:'Usuario / contraseña no son validos'
+                msg: 'Usuario / contraseña no son validos'
             })
         }
 
@@ -47,11 +47,11 @@ const login = async(req = request, res = response) => {
         })
 
 
-    }catch(error){
+    } catch (error) {
 
         console.log("error");
         console.log(error);
-        
+
         return res.status(500).json({
             msg: 'Ocurrio un problema'
         })
@@ -60,31 +60,31 @@ const login = async(req = request, res = response) => {
 
 
 
-const googleSignIn = async(req = request, res = response) => {
+const googleSignIn = async (req = request, res = response) => {
 
-    const {id_token} = req.body;
+    const { id_token } = req.body;
 
 
-    try{
+    try {
 
-        const {nombre, img, correo} = await googleVerify( id_token )
+        const { nombre, img, correo } = await googleVerify(id_token)
 
-        let usuario = await Usuario.findOne({correo})
+        let usuario = await Usuario.findOne({ correo })
 
-        if(!usuario){
+        if (!usuario) {
             const data = {
                 nombre,
                 correo,
-                password:'*****',
+                password: '*****',
                 img,
-                gooogle:true
+                gooogle: true
             };
 
             usuario = new Usuario(data);
             await usuario.save();
         }
 
-        if (!usuario.status){
+        if (!usuario.status) {
             return res.status(401).json({
                 msg: 'Contacte soporte'
             });
@@ -93,19 +93,19 @@ const googleSignIn = async(req = request, res = response) => {
         const token = await generarJWT(usuario.id);
 
         res.json({
-            msg:'ok',
+            msg: 'ok',
             token,
             usuario,
         });
 
 
-    }catch(error){
+    } catch (error) {
 
         console.log("error");
         console.log(error);
 
         return res.status(400).json({
-            msg:'El token no se pudo validar'
+            msg: 'El token no se pudo validar'
         })
     }
 };

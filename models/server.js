@@ -8,8 +8,12 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
-        this.usuariosPath = '/api/usuarios';
-        this.authPath = '/api/auth';
+
+        this.paths = {
+            auth: '/api/auth',
+            categorias: '/api/categorias',
+            usuarios: '/api/usuarios',
+        }
 
         this.conectarDB()
 
@@ -18,21 +22,22 @@ class Server {
         this.routes()
     }
 
-    async conectarDB(){
+    async conectarDB() {
         await dbConnection()
     }
 
-    middleware(){
-        this.app.use( cors() );
-        this.app.use( express.json() ); // transforma toda la info que llega a JSON
-        this.app.use( express.static('public') )
+    middleware() {
+        this.app.use(cors());
+        this.app.use(express.json()); // transforma toda la info que llega a JSON
+        this.app.use(express.static('public'))
     }
 
 
     routes() {
 
-        this.app.use(this.authPath, require('../routes/auth'))
-        this.app.use(this.usuariosPath, require('../routes/usuarios'))
+        this.app.use(this.paths.auth, require('../routes/auth'))
+        this.app.use(this.paths.categorias, require('../routes/categorias'))
+        this.app.use(this.paths.usuarios, require('../routes/usuarios'))
 
     }
 

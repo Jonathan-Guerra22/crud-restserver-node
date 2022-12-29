@@ -9,7 +9,7 @@ const {
     validarJWT,
     adminRol,
     tieneRol,
- } = require('../middlewares');
+} = require('../middlewares');
 
 
 const router = Router()
@@ -19,7 +19,7 @@ router.get('/', usuariosGet);
 
 router.post('/', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('password', 'El password es obligatorio y con mas de 6 caracteres').isLength({min:6}),
+    check('password', 'El password es obligatorio y con mas de 6 caracteres').isLength({ min: 6 }),
     check('correo', 'El correo no es valido').isEmail(),
     check('correo').custom(emailExiste),
     //check('rol', 'El rol no es valido').isIn(['ADMIN', 'USER_ROLE']),

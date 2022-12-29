@@ -97,11 +97,11 @@ const usuariosPut = async (req, res = Response) => {
     })
 }
 
-const usuariosDelete = async(req, res = Response) => {
+const usuariosDelete = async (req, res = Response) => {
 
-    const {id} = req.params;
+    const { id } = req.params;
 
-    const usuario = await Usuario.findByIdAndUpdate(id, {status:false})
+    const usuario = await Usuario.findByIdAndUpdate(id, { status: false })
 
     res.json({
         message: `Se elimino el usuario ${usuario.nombre} con id ${id}`
