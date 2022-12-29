@@ -6,4 +6,6 @@ Para hacer el registro / inicio de sesion y cierre de sesion, puede acceder a la
 > http://localhost:{{puerto}}/
 
 
+![alt text](https://github.com/Jonathan-Guerra22/FrontCicloTresMINTIC/blob/main/google_signin-signout.png?raw=true)
+
 Tener en cuenta que las variables de entorno deben estar colocadas para que funcione correctamente
