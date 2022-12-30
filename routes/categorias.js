@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { crearCategoria, obtenerCategorias, obtenerCategoria, actualizarCategoria, eliminarCategoria } = require('../controllers/categorias');
-const { existeCategoriaPorId, esRolValido } = require('../helpers/db-validators');
+const { existeCategoriaPorId } = require('../helpers/db-validators');
 
 const {
     validarCampos,
@@ -29,7 +29,7 @@ router.post('/', [
 
 router.put('/:id', [
     validarJWT,
-    check('nombre', 'El usuario es obligatorio').not().isEmpty(),
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('id', 'El id es obligatorio').not().isEmpty(),
     check('id', 'El id no es valido').isMongoId(),
     check('id').custom(existeCategoriaPorId),
